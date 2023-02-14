@@ -1,0 +1,2379 @@
+<Geral>:
+    canvas:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    orientation: "vertical"
+    Gerenciador_principal:
+        id: gerenciador
+        Screen:
+            name: "menu"
+            BoxLayout:
+                orientation: "vertical"
+                spacing: 20
+                padding: 30
+                BoxLayout:
+                    padding: 10
+                    size_hint_y: 0.3
+                    Image:
+                        source: "imagens/vida_de_boneca.png"
+                        allow_stretch: True
+                        center: self.parent.center
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint_y: 0.35
+                    padding: 10
+                    canvas:
+                        Color:
+                            rgba: 1, 97/255, 178/255, 1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    Label_minha:
+                        size_hint_y: 0.2
+                        text: "Compromissos este mês:"
+                        font_size: 50
+                        bold: True
+                        color: 0, 0, 0, 1
+                    BoxLayout:
+                        size_hint_y: 0.8
+                        ScrollView:
+                            bar_color: 0, 0, 0, 0
+                            Compromissos_scroll:
+                                id: compromissos_da_semana_menu
+                                spacing: 10
+                                size_hint_x: None
+                                width: self.minimum_width
+                    
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint_y: 0.35
+                    padding: 10
+                    canvas:
+                        Color:
+                            rgba: 1, 97/255, 178/255, 1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    Label_minha:
+                        size_hint_y: 0.2
+                        text: "Próximas feiras:"
+                        bold: True
+                        font_size: 50
+                        color: 0, 0, 0, 1
+                    BoxLayout:
+                        size_hint_y: 0.8
+                        padding: 30
+                        ScrollView:
+                            bar_color: 0, 0, 0, 0
+                            Menu_feiras_scroll:
+                                id: menu_proximas_feiras
+                                spacing: 10
+                                size_hint_x: None
+                                width: self.minimum_width          
+ 
+        Screen:
+            name: "tela_estoque"
+            on_enter: 
+                preco_total.text = "TOTAL: R$" + "{:,.2f}".format(gerenciador.total_contabilizar())
+            ScreenManager:
+                id: gerenciador_estoque
+                Screen:
+                    name: "scroll_estoque"
+                    on_enter: tela_estoque_scroll.tela_atualizar()
+                    BoxLayout:
+                        orientation: "vertical"
+                        spacing: 10
+                        Label_minha:
+                            id: preco_total
+                            size_hint_y: .1
+                            font_size: 80
+                            bold: True
+                            italic: True
+                            background_color: 1, 36/255, 148/255, 1
+                            canvas.before:
+                                Color:
+                                    rgba: self.background_color
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+                            text: "TOTAL: R$" + "{:,.2f}".format(gerenciador.valor_total)
+                        ScrollView:
+                            bar_color: 0, 0, 0, 0
+                            size_hint_y: .9
+                            Tela_estoque:
+                                id: tela_estoque_scroll
+                                orientation: "vertical"
+                                size_hint_y: None
+                                padding: 10
+                                spacing: 10
+                                height: self.minimum_height
+                            
+
+                Screen:
+                    name: "adicionar_estoque"
+                    on_pre_enter: imagem_adicionar_estoque = "imagens/logo.png"
+                    on_pre_enter: nome_produto_adicionar_estoque = "Nome do produto"
+                    on_pre_enter: quantidade_produto_adicionar_estoque = "Quantidade"
+                    on_pre_enter: preco_produto_adicionar_estoque = "Preço"
+                    ScreenManager:
+                        id: gerenciador_adicao_estoque
+                        Screen:
+                            canvas:
+                                Color:
+                                    rgba: 0, 0, 0, 0.1
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+                            name: "adicionando_estoque"
+                            BoxLayout:
+                                orientation: "vertical"
+                                BoxLayout:
+                                    orientation: "vertical"
+                                    padding: 10
+                                    spacing: 5
+                                    BoxLayout:
+                                        orientation: "vertical"
+                                        size_hint_y: 0.3
+                                        Label_minha:
+                                            size_hint_y: 0.3
+                                            bold: True
+                                            text: "Escolha uma imagem"
+                                            color: 0, 0, 0, 1
+                                            font_size: self.height / 2
+                                            
+                                        Button:
+                                            size_hint_y: 0.7
+                                            background_color: 0, 0, 0, 0
+                                            on_release: 
+                                                gerenciador_adicao_estoque.current = "selecionando_imagem_adicao"
+                                                gerenciador_adicao_estoque.transition.direction = "left"
+                                            Image:
+                                                id: imagem_adicionar_estoque
+                                                source: "imagens/logo.png"
+                                                center: self.parent.center
+                                                allow_stretch: True
+                                    
+                                    BoxLayout:
+                                        size_hint_y: 0.7
+                                        orientation: "vertical"
+                                        TextInput:
+                                            id: nome_produto_adicionar_estoque
+                                            text: "Nome do produto"
+                                            halign: "center"
+                                            bold: True
+                                            font_size: self.width / 8
+                                            background_color: 1, 18/255, 196/255, 1
+
+                                        TextInput: 
+                                            id: quantidade_produto_adicionar_estoque
+                                            text: "Quantidade"
+                                            input_filter: "float"
+                                            halign: "center"
+                                            bold: True
+                                            font_size: self.width / 8
+                                            background_color: 1, 18/255, 196/255, 1
+
+                                        TextInput:
+                                            id: preco_produto_adicionar_estoque
+                                            text: "Preço"
+                                            input_filter: "float"
+                                            halign: "center"
+                                            bold: True
+                                            font_size: self.width / 8
+                                            background_color: 1, 18/255, 196/255, 1
+                                
+                                BoxLayout:
+                                    size_hint_y: 0.15
+                                    Button:
+                                        text: "Voltar"
+                                        on_release: 
+                                            gerenciador_estoque.current = "scroll_estoque"
+                                            gerenciador_estoque.transition.direction = "up"
+                                        background_color: 1, 1, 1, 0.2
+                                        font_size: self.height / 3
+                                        bold: True
+                                        outline_color: 0, 0, 0
+                                        outline_width: 2
+                                    Button:
+                                        text: "Adicionar"
+                                        on_release: tela_estoque_scroll.adicionar({"nome_produto": nome_produto_adicionar_estoque.text, "quantidade": quantidade_produto_adicionar_estoque.text, "preco": preco_produto_adicionar_estoque.text, "imagem":imagem_adicionar_estoque.source})
+                                        on_release: 
+                                            gerenciador_estoque.transition.direction = "up"
+                                            gerenciador_estoque.current = "scroll_estoque"
+                                        background_color: 1, 1, 1, 0.2
+                                        font_size: self.height / 3
+                                        bold: True
+                                        outline_color: 0, 0, 0
+                                        outline_width: 2
+                
+                        Screen:
+                            name: "selecionando_imagem_adicao"
+                            canvas:
+                                Color:
+                                    rgba: 0 , 0, 0, 1
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+                            BoxLayout:
+                                orientation: "vertical"
+                                BoxLayout:
+                                    size_hint_y: 0.3
+                                    Image:
+                                        id: selecionando_imagem_adicao_imagem_amostra
+                                        allow_stretch: True
+                                        source: "imagens/logo.png"
+                                FileChooserIconView:
+                                    id: selecionador_de_arquivos_adicao
+                                    size_hint_y: 0.6
+                                    path: "/"
+                                    filters: ['*.png']
+                                    on_selection: selecionando_imagem_adicao_imagem_amostra.source = gerenciador.imagem_adicionar(self.selection, selecionando_imagem_adicao_imagem_amostra.source) 
+                                    on_submit: imagem_adicionar_estoque.source = self.selection
+                                    on_submit: 
+                                        gerenciador_adicao_estoque.current = "adicionando_estoque"
+                                        gerenciador_adicao_estoque.transition.direction = "right"
+                                BoxLayout:
+                                    size_hint_y: 0.1
+                                    Button:
+                                        text: "Voltar"
+                                        on_release: 
+                                            gerenciador_adicao_estoque.transition.direction = "right"
+                                            gerenciador_adicao_estoque.current = "adicionando_estoque"
+                                        background_color: 1, 1, 1, 0.2
+                                        font_size: self.height / 3
+                                        bold: True
+                                        outline_color: 0, 0, 0
+                                        outline_width: 2
+                                    Button:
+                                        text: "Selecionar"
+                                        on_release: imagem_adicionar_estoque.source = selecionador_de_arquivos_adicao.selection[0]
+                                        on_release: 
+                                            gerenciador_adicao_estoque.transition.direction = "right"
+                                            gerenciador_adicao_estoque.current = "adicionando_estoque"
+                                        background_color: 1, 1, 1, 0.2
+                                        font_size: self.height / 3
+                                        bold: True
+                                        outline_color: 0, 0, 0
+                                        outline_width: 2
+
+                Screen:
+                    name: "editar_caixa_estoque"
+                    on_pre_enter: imagem_editar_estoque.source = tela_estoque_scroll.estoque[gerenciador.atual_editando_estoque]["imagem"]
+                    on_pre_enter: nome_produto_editar_estoque.text = tela_estoque_scroll.estoque[gerenciador.atual_editando_estoque]["nome_produto"]
+                    on_pre_enter: quantidade_produto_editar_estoque.text = tela_estoque_scroll.estoque[gerenciador.atual_editando_estoque]["quantidade"]
+                    on_pre_enter: preco_produto_editar_estoque.text = tela_estoque_scroll.estoque[gerenciador.atual_editando_estoque]["preco"]
+                    on_pre_enter: selecionando_imagem_edicao_imagem_amostra.source = tela_estoque_scroll.estoque[gerenciador.atual_editando_estoque]["imagem"]
+                    ScreenManager:
+                        id: gerenciador_edicao_estoque
+                        Screen:
+                            canvas:
+                                Color:
+                                    rgba: 0, 0, 0, 0.1
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+                            name: "editando_estoque"
+                            BoxLayout:
+                                orientation: "vertical"
+                                spacing: 50
+                                BoxLayout:
+                                    orientation: "vertical"
+                                    size_hint_y: 0.45
+                                    Label_minha:
+                                        size_hint_y: 0.3
+                                        bold: True
+                                        text: "Escolha uma imagem"
+                                        color: 0, 0, 0, 1
+                                        font_size: self.height / 2
+                                        
+                                    Button:
+                                        size_hint_y: 0.7
+                                        background_color: 0, 0, 0, 0
+                                        on_release: 
+                                            gerenciador_edicao_estoque.current = "selecionando_imagem_edicao"
+                                            gerenciador_edicao_estoque.transition.direction = "left"
+                                        Image:
+                                            id: imagem_editar_estoque
+                                            source: ""
+                                            center: self.parent.center
+                                            allow_stretch: True
+                                
+                                BoxLayout:
+                                    size_hint_y: 0.35
+                                    TextInput:
+                                        id: nome_produto_editar_estoque
+                                        text: ""
+                                        halign: "center"
+                                        bold: True
+                                        font_size: self.width / 8
+                                        background_color: 1, 18/255, 196/255, 1
+
+                                    TextInput: 
+                                        id: quantidade_produto_editar_estoque
+                                        input_filter: "float"
+                                        text: ""
+                                        halign: "center"
+                                        bold: True
+                                        font_size: self.width / 8
+                                        background_color: 1, 18/255, 196/255, 1
+
+                                    TextInput:
+                                        id: preco_produto_editar_estoque
+                                        input_filter: "float"
+                                        text: ""
+                                        halign: "center"
+                                        bold: True
+                                        font_size: self.width / 8
+                                        background_color: 1, 18/255, 196/255, 1
+                                
+                                BoxLayout:
+                                    size_hint_y: 0.20
+                                    Button:
+                                        text: "Voltar"
+                                        on_release: 
+                                            gerenciador_estoque.current = "scroll_estoque"
+                                            gerenciador_estoque.transition.direction = "up"
+                                        background_color: 1, 1, 1, 0.2
+                                        font_size: self.height / 3
+                                        bold: True
+                                        outline_color: 0, 0, 0
+                                        outline_width: 2
+
+                                    Button:
+                                        text: "Excluir"
+                                        on_release: tela_estoque_scroll.excluir(gerenciador.atual_editando_estoque)
+                                        on_release: 
+                                            gerenciador_estoque.current = "scroll_estoque"
+                                            gerenciador_estoque.transition.direction = "up"
+                                        background_color: 1, 1, 1, 0.2
+                                        font_size: self.height / 3
+                                        bold: True
+                                        outline_color: 0, 0, 0
+                                        outline_width: 2
+
+                                    Button:
+                                        text: "Concluir edição"
+                                        on_release: tela_estoque_scroll.atualizar({"nome_produto": nome_produto_editar_estoque.text, "quantidade": quantidade_produto_editar_estoque.text, "preco": preco_produto_editar_estoque.text, "imagem": imagem_editar_estoque.source}, gerenciador.atual_editando_estoque)
+                                        on_release: 
+                                            gerenciador_estoque.current = "scroll_estoque"
+                                            gerenciador_estoque.transition.direction = "up"
+                                        background_color: 1, 1, 1, 0.2
+                                        font_size: self.height / 3
+                                        bold: True
+                                        outline_color: 0, 0, 0
+                                        outline_width: 2
+                            
+                        Screen:
+                            name: "selecionando_imagem_edicao"
+                            canvas:
+                                Color:
+                                    rgba: 0 , 0, 0, 1
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+                            BoxLayout:
+                                orientation: "vertical"
+                                BoxLayout:
+                                    size_hint_y: 0.3
+                                    Image:
+                                        id: selecionando_imagem_edicao_imagem_amostra
+                                        allow_stretch: True
+                                        source: "imagens/logo.png"
+                                FileChooserIconView:
+                                    id: selecionador_de_arquivos
+                                    size_hint_y: 0.6
+                                    path: "/"
+                                    filters: ['*.png']
+                                    on_selection: selecionando_imagem_edicao_imagem_amostra.source = gerenciador.imagem_adicionar(self.selection, selecionando_imagem_edicao_imagem_amostra.source)
+                                    on_submit: imagem_editar_estoque.source = self.selection
+                                    on_submit: 
+                                        gerenciador_edicao_estoque.current = "editando_estoque"
+                                        gerenciador_edicao_estoque.transition.direction = "right"
+                                BoxLayout:
+                                    size_hint_y: 0.1
+                                    Button:
+                                        text: "Voltar"
+                                        on_release: 
+                                            gerenciador_edicao_estoque.transition.direction = "right"
+                                            gerenciador_edicao_estoque.current = "editando_estoque"
+                                        background_color: 1, 1, 1, 0.2
+                                        font_size: self.height / 3
+                                        bold: True
+                                        outline_color: 0, 0, 0
+                                        outline_width: 2
+                                    Button:
+                                        text: "Selecionar"
+                                        on_release: imagem_editar_estoque.source = selecionador_de_arquivos.selection[0]
+                                        on_release: 
+                                            gerenciador_edicao_estoque.current = "editando_estoque"
+                                            gerenciador_edicao_estoque.transition.direction = "right"
+                                        background_color: 1, 1, 1, 0.2
+                                        font_size: self.height / 3
+                                        bold: True
+                                        outline_color: 0, 0, 0
+                                        outline_width: 2
+
+        Screen: 
+            name: "tela_feiras"
+            on_pre_enter: feiras_scroll.atualizar()
+            on_pre_enter: menu_proximas_feiras.atualizar()
+            on_pre_enter: compromissos_da_semana_menu.atualizar()
+            ScreenManager:
+                id: gerenciador_feiras
+                Screen:
+                    name: "scroll_feiras_principal"
+                    on_enter: feiras_scroll.atualizar()
+                    ScrollView:
+                        bar_color: 0, 0, 0, 0
+                        Feiras_scroll:
+                            id: feiras_scroll
+                            orientation: "vertical"
+                            padding: 10
+                            spacing: 10
+                            size_hint_y: None
+                            height: self.minimum_height
+                
+                Screen:
+                    name: "concluir_feira"
+                    on_pre_enter: concluir_feira_scroll.iniciar(gerenciador.feira_editando)
+                    ScreenManager:
+                        id: gerenciador_concluir_feira
+                        Screen:
+                            name: "principal_concluir_feira"
+                            BoxLayout:
+                                orientation: "vertical"
+                                Label_minha:
+                                    size_hint_y: 0.2
+                                    
+                                    canvas.before:
+                                        Color:
+                                            rgba: 0, 0, 0, 1
+                                        Rectangle:
+                                            pos: self.pos
+                                            size: self.size
+                                    text: "Coloque as vendas da feira"
+                                BoxLayout:
+                                    size_hint_y: 0.65
+                                    ScrollView:
+                                        bar_color: 0, 0, 0, 0
+                                        Concluir_feira_scroll:
+                                            id: concluir_feira_scroll
+                                            orientation: "vertical"
+                                            padding: 10
+                                            spacing: 10
+                                            size_hint_y: None
+                                            height: self.minimum_height
+                        
+                                BoxLayout:
+                                    size_hint_y: 0.15
+                                    Button:
+                                        text: "Voltar"
+                                        on_release: 
+                                            gerenciador_feiras.current = "scroll_feiras_principal"
+                                            gerenciador_feiras.transition.direction = "up"
+                                    Button:
+                                        text: "Concluir"
+                                        on_release: concluir_feira_scroll.concluir_feira()
+                                        on_release: 
+                                            gerenciador_feiras.transition.direction = "up"
+                                            gerenciador_feiras.current = "scroll_feiras_principal"
+
+                        Screen:
+                            name: "adicionar_produto_concluir_feira"
+                            on_pre_enter: spinner_feira_adicionar_produto_concluir.values = adicionar_agenda_tela.nome_todos_os_produtos
+                            on_pre_enter: spinner_feira_adicionar_produto_concluir.text = "Escolha um produto"
+                            on_pre_enter: preco_produto_feira_adicionar_concluir.text = "Preço"
+                            on_pre_enter: quantidade_produto_feira_adicionar_concluir.text = "Quantidade"
+                            on_pre_enter: descricao_feira_adicionar_concluir.text = "Descrição"
+                            on_pre_enter: spinner_feiras_concluir_venda_pagamento.text = "Escolha o método de pagamento"
+                            BoxLayout:
+                                orientation: "vertical"
+                                id: adicionar_produto_feira_tela_concluir
+                                BoxLayout:
+                                    size_hint_y: 0.6
+                                    Spinner:
+                                        id: spinner_feira_adicionar_produto_concluir
+                                        text: "Escolha um produto"
+                                        values: adicionar_agenda_tela.nome_todos_os_produtos
+                                        
+                                    BoxLayout:
+                                        orientation: "vertical"
+                                        TextInput:
+                                            id: quantidade_produto_feira_adicionar_concluir
+                                            input_filter: "float"
+                                            text: "Quantidade"
+                                            halign: "center"
+                                        
+                                        TextInput:
+                                            id: preco_produto_feira_adicionar_concluir
+                                            input_filter: "float"
+                                            text: "Preço"
+                                            halign: "center"
+                                        
+                                BoxLayout:
+                                    size_hint_y: 0.3
+                                    TextInput:
+                                        id: descricao_feira_adicionar_concluir
+                                        text: "Descrição"
+                                        halign: "center"
+                                    
+                                    Spinner:
+                                        id: spinner_feiras_concluir_venda_pagamento
+                                        text: "Escolha o método de pagamento"
+                                        values: ["Pix", "Dinheiro físico", "Cartão de crédito", "Cartão de débito"]
+                                
+                                BoxLayout:
+                                    size_hint_y: 0.1
+                                    Button:
+                                        text: "Voltar"
+                                        on_release: 
+                                            gerenciador_concluir_feira.current = "principal_concluir_feira"
+                                            gerenciador_concluir_feira.transition.direction = "right"
+                                    
+                                    Button:
+                                        text: "Adicionar"
+                                        on_release: 
+                                            gerenciador_concluir_feira.transition.direction = "right"
+                                            if spinner_feira_adicionar_produto_concluir.text != "Escolha um produto" and quantidade_produto_feira_adicionar_concluir.text.isnumeric() and preco_produto_feira_adicionar_concluir.text.isnumeric() and spinner_feiras_concluir_venda_pagamento.text != "Escolha o método de pagamento": gerenciador_concluir_feira.current = "principal_concluir_feira"
+                                            if spinner_feira_adicionar_produto_concluir.text != "Escolha um produto" and quantidade_produto_feira_adicionar_concluir.text.isnumeric() and preco_produto_feira_adicionar_concluir.text.isnumeric() and spinner_feiras_concluir_venda_pagamento.text != "Escolha o método de pagamento": concluir_feira_scroll.adicionar([spinner_feira_adicionar_produto_concluir.text, quantidade_produto_feira_adicionar_concluir.text, descricao_feira_adicionar_concluir.text, preco_produto_feira_adicionar_concluir.text, spinner_feiras_concluir_venda_pagamento.text])
+
+
+                Screen:
+                    name: "adicionar_feira"
+                    on_pre_enter: nome_feira_adicionar.text = "Nome da feira"
+                    on_pre_enter: local_feira_adicionar.text = "Local da feira"
+                    on_pre_enter: descricao_feira_adicionar.text = "Descrição"
+                    on_pre_enter: dia_feira_adicionar.text = "Dia"
+                    on_pre_enter: mes_feira_adicionar.text = "Mês"
+                    on_pre_enter: ano_feira_adicionar.text = "Ano"
+                    on_pre_enter: horario_inicial_feira_adicionar.text = "Horário inicial"
+                    on_pre_enter: horario_final_feira_adicionar.text = "Horário final"
+                    BoxLayout:
+                        padding: 50
+                        BoxLayout:
+                            orientation: "vertical"
+                            spacing: 20
+                            BoxLayout:
+                                orientation: "vertical"
+                                spacing: 10
+                                TextInput:
+                                    id: nome_feira_adicionar
+                                    text: "Nome da feira"
+                                
+                                TextInput:
+                                    id: local_feira_adicionar
+                                    text: "Local da feira"
+                                
+                                TextInput:
+                                    id: descricao_feira_adicionar
+                                    text: "Descrição"
+
+                            BoxLayout:
+                                Spinner:
+                                    id: dia_feira_adicionar
+                                    text: "Dia"
+                                    values: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31']
+                                
+                                Spinner:
+                                    id: mes_feira_adicionar
+                                    text: "Mês"
+                                    values: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+                                
+                                Spinner:
+                                    id: ano_feira_adicionar
+                                    text: "Ano"
+                                    values: ['2022', '2023', '2024']
+                            BoxLayout:
+                                TextInput:
+                                    id: horario_inicial_feira_adicionar
+                                    text: "Horário inicial"
+                                TextInput:
+                                    id: horario_final_feira_adicionar
+                                    text: "Horário final"
+                            
+                            BoxLayout:
+                                Button:
+                                    text: "Voltar"
+                                    on_release: 
+                                        gerenciador_feiras.current = "scroll_feiras_principal"
+                                        gerenciador_feiras.transition.direction = "up"
+                                Button:
+                                    text: "Concluir"
+                                    on_release: 
+                                        gerenciador_feiras.transition.direction = "up"
+                                        if dia_feira_adicionar.text.isnumeric() and mes_feira_adicionar.text.isnumeric() and ano_feira_adicionar.text.isnumeric(): feiras_scroll.adicionar(dia_feira_adicionar.text, mes_feira_adicionar.text, ano_feira_adicionar.text, local_feira_adicionar.text, horario_inicial_feira_adicionar.text, horario_final_feira_adicionar.text, descricao_feira_adicionar.text, nome_feira_adicionar.text)
+                                        if dia_feira_adicionar.text.isnumeric() and mes_feira_adicionar.text.isnumeric() and ano_feira_adicionar.text.isnumeric(): gerenciador_feiras.current = "scroll_feiras_principal"
+
+                Screen:
+                    name: "adicionar_produto_feira"
+                    BoxLayout:
+                        orientation: "vertical"
+                        BoxLayout:
+                            size_hint_y: 0.85
+                            padding: 10
+                            BoxLayout:
+                                orientation: "vertical"
+                                Spinner:
+                                    id: spinner_feira_adicionar_produto
+                                    text: "Escolha um produto"
+                                    values: adicionar_agenda_tela.nome_todos_os_produtos
+                                    on_text: adicionando_produto_feira_imagem.source = gerenciador.procurar_imagem(self.text)
+                                
+                                TextInput:
+                                    id: quantidade_produto_feiras_adicionar
+                                    input_filter: "float"
+                                    text: "Quantidade"
+                                    halign: "center"
+                                
+                            BoxLayout:
+                                orientation: "vertical"
+                                BoxLayout:
+                                    canvas:
+                                        Color:
+                                            rgba: .1, .1, .1, 1
+                                        Rectangle:
+                                            pos: self.pos
+                                            size: self.size
+                                    Image:
+                                        id: adicionando_produto_feira_imagem
+                                        allow_stretch: True
+                                        source: "imagens/logo.png"
+                                TextInput:
+                                    id: descricao_feiras_adicionar
+                                    text: "Descrição"
+                                    halign: "center"
+
+                        
+                        BoxLayout:
+                            size_hint_y: 0.15
+                            Button:
+                                text: "Voltar"
+                                on_release: 
+                                    gerenciador_feiras.transition.direction = "up"
+                                    gerenciador_feiras.current = "scroll_feiras_principal"
+                            
+                            Button:
+                                text: "Adicionar"
+                                on_release: 
+                                    gerenciador_feiras.transition.direction = "up"
+                                    if spinner_feira_adicionar_produto.text != "Escolha um produto" and quantidade_produto_feiras_adicionar.text.isnumeric(): gerenciador_feiras.current = "scroll_feiras_principal"
+                                    feiras_scroll.adicionar_produto([spinner_feira_adicionar_produto.text, quantidade_produto_feiras_adicionar.text, descricao_feiras_adicionar.text], gerenciador.adicionando_produto_feira)
+                                    compromissos_da_semana_menu.atualizar()
+                
+                Screen:
+                    name: "editar_caixa_feiras"
+                    on_pre_enter: nome_feira_editar.text = feiras_scroll.feiras[gerenciador.feira_editando]["nome_feira"]
+                    on_pre_enter: local_feira_editar.text = feiras_scroll.feiras[gerenciador.feira_editando]["local"]
+                    on_pre_enter: descricao_feira_editar.text = feiras_scroll.feiras[gerenciador.feira_editando]["descricao"]
+                    on_pre_enter: dia_feira_editar.text = feiras_scroll.feiras[gerenciador.feira_editando]["data"][0:2]
+                    on_pre_enter: mes_feira_editar.text = feiras_scroll.feiras[gerenciador.feira_editando]["data"][3:5]
+                    on_pre_enter: ano_feira_editar.text = feiras_scroll.feiras[gerenciador.feira_editando]["data"][6:]
+                    on_pre_enter: horario_inicial_feira_editar.text = feiras_scroll.feiras[gerenciador.feira_editando]["horario_inicio"]
+                    on_pre_enter: horario_final_feira_editar.text = feiras_scroll.feiras[gerenciador.feira_editando]["horario_final"]
+
+                    BoxLayout:
+                        padding: 50
+                        BoxLayout:
+                            orientation: "vertical"
+                            spacing: 20
+                            BoxLayout:
+                                orientation: "vertical"
+                                spacing: 10
+                                TextInput:
+                                    id: nome_feira_editar
+                                    text: "Nome da feira"
+                                
+                                TextInput:
+                                    id: local_feira_editar
+                                    text: "Local da feira"
+                                
+                                TextInput:
+                                    id: descricao_feira_editar
+                                    text: "Descrição"
+
+                            BoxLayout:
+                                Spinner:
+                                    id: dia_feira_editar
+                                    text: "Dia"
+                                    values: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31']
+                                
+                                Spinner:
+                                    id: mes_feira_editar
+                                    text: "Mês"
+                                    values: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+                                
+                                Spinner:
+                                    id: ano_feira_editar
+                                    text: "Ano"
+                                    values: ['2022', '2023', '2024']
+                            BoxLayout:
+                                TextInput:
+                                    id: horario_inicial_feira_editar
+                                    text: "Horário inicial"
+                                TextInput:
+                                    id: horario_final_feira_editar
+                                    text: "Horário final"
+                            
+                            BoxLayout:
+                                Button:
+                                    text: "Voltar"
+                                    on_release: 
+                                        gerenciador_feiras.current = "scroll_feiras_principal"
+                                        gerenciador_feiras.transition.direction = "up"
+                                Button:
+                                    text: "Excluir"
+                                    on_release:
+                                        gerenciador_feiras.transition.direction = "up"
+                                        gerenciador_feiras.current = "scroll_feiras_principal"
+                                        feiras_scroll.excluir(gerenciador.feira_editando)
+
+                                Button:
+                                    text: "Concluir"
+                                    on_release: 
+                                        gerenciador_feiras.transition.direction = "up"
+                                        if dia_feira_editar.text.isnumeric() and mes_feira_editar.text.isnumeric() and ano_feira_editar.text.isnumeric(): feiras_scroll.editar(dia_feira_editar.text, mes_feira_editar.text, ano_feira_editar.text, local_feira_editar.text, horario_inicial_feira_editar.text, horario_final_feira_editar.text, descricao_feira_editar.text, nome_feira_editar.text, gerenciador.feira_editando)
+                                        if dia_feira_editar.text.isnumeric() and mes_feira_editar.text.isnumeric() and ano_feira_editar.text.isnumeric(): gerenciador_feiras.current = "scroll_feiras_principal"
+
+
+        Screen:
+            name: "tela_agenda"
+            on_enter: adicionar_agenda_tela.atualizar()
+            ScreenManager:
+                id: gerenciador_agenda
+                
+                Screen:
+                    name: "agenda_box"
+                    on_enter: agenda_scroll.atualizar()
+                    ScrollView:
+                        bar_color: 0, 0, 0, 0
+                        Agenda_scroll:
+                            id: agenda_scroll
+                            orientation: "vertical"
+                            size_hint_y: None
+                            height: self.minimum_height
+                            padding: 10
+                            spacing: 10
+
+                Screen:
+                    name: "adicionar_agenda"
+                    on_pre_enter: spinner_agenda_adicionar_produto.values = adicionar_agenda_tela.nome_todos_os_produtos
+                    on_pre_enter: spinner_agenda_adicionar_produto.text = "Escolha um produto"
+                    on_pre_enter: quantidade_produto_agenda_adicionar.text = "Quantidade"
+                    on_pre_enter: descricao_agenda_adicionar.text = "Descrição"
+                    on_pre_enter: dia_agenda_adicionar_produto.text = "Dia"
+                    on_pre_enter: mes_agenda_adicionar_produto.text = "Mês"
+                    on_pre_enter: ano_agenda_adicionar_produto.text = "Ano"
+                    Adicionar_agenda_tela:
+                        orientation: "vertical"
+                        id: adicionar_agenda_tela
+                        BoxLayout:
+                            size_hint_y: 0.85
+                            orientation: "vertical"
+                            padding: 10
+                            BoxLayout:
+                                size_hint_y: 0.65
+                                Spinner:
+                                    id: spinner_agenda_adicionar_produto
+                                    text: "Escolha um produto"
+                                    values: adicionar_agenda_tela.nome_todos_os_produtos
+                                    
+                                BoxLayout:
+                                    orientation: "vertical"
+                                    TextInput:
+                                        id: quantidade_produto_agenda_adicionar
+                                        input_filter: "float"
+                                        text: "Quantidade"
+                                        halign: "center"
+                                    
+                                    TextInput:
+                                        id: descricao_agenda_adicionar
+                                        text: "Descrição"
+                                        halign: "center"
+
+                            BoxLayout:
+                                size_hint_y: 0.35
+                                Spinner:
+                                    id: dia_agenda_adicionar_produto
+                                    text: "Dia"
+                                    values: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31']
+                                
+                                Spinner:
+                                    id: mes_agenda_adicionar_produto
+                                    text: "Mês"
+                                    values: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+                                
+                                Spinner:
+                                    id: ano_agenda_adicionar_produto
+                                    text: "Ano"
+                                    values: ['2022', '2023', '2024']
+                        
+                        BoxLayout:
+                            size_hint_y: 0.15
+                            Button:
+                                text: "Voltar"
+                                on_release: 
+                                    gerenciador_agenda.transition.direction = "up"
+                                    gerenciador_agenda.current = "agenda_box"
+                            
+                            Button:
+                                text: "Adicionar"
+                                on_release: 
+                                    gerenciador_agenda.current = "agenda_box"
+                                    gerenciador_agenda.transition.direction = "up"
+                                    agenda_scroll.adicionar([spinner_agenda_adicionar_produto.text, quantidade_produto_agenda_adicionar.text, descricao_agenda_adicionar.text, dia_agenda_adicionar_produto.text, mes_agenda_adicionar_produto.text, ano_agenda_adicionar_produto.text])
+                                    compromissos_da_semana_menu.atualizar()
+
+                Screen:
+                    name: "editar_caixa_agenda"
+                    on_pre_enter: spinner_agenda_editar_produto.text = agenda_scroll.compromissos_agenda[gerenciador.atual_editando_agenda]["nome"]
+                    on_pre_enter: quantidade_produto_agenda_editar.text = agenda_scroll.compromissos_agenda[gerenciador.atual_editando_agenda]["quantidade"]
+                    on_pre_enter: descricao_agenda_editar.text = agenda_scroll.compromissos_agenda[gerenciador.atual_editando_agenda]["descricao"]
+                    on_pre_enter: dia_agenda_editar_produto.text = agenda_scroll.compromissos_agenda[gerenciador.atual_editando_agenda]["data"][0:2]
+                    on_pre_enter: mes_agenda_editar_produto.text = agenda_scroll.compromissos_agenda[gerenciador.atual_editando_agenda]["data"][3:5]
+                    on_pre_enter: ano_agenda_editar_produto.text = agenda_scroll.compromissos_agenda[gerenciador.atual_editando_agenda]["data"][6:]
+                    BoxLayout:
+                        orientation: "vertical"
+                        id: editar_agenda_tela
+                        BoxLayout:
+                            orientation: "vertical"
+                            size_hint_y: 0.85
+                            padding: 10
+                            BoxLayout:
+                                size_hint_y: 0.65
+                                Spinner:
+                                    id: spinner_agenda_editar_produto
+                                    text: "Escolha um produto"
+                                    values: adicionar_agenda_tela.nome_todos_os_produtos
+                                    
+                                BoxLayout:
+                                    orientation: "vertical"
+                                    TextInput:
+                                        id: quantidade_produto_agenda_editar
+                                        input_filter: "float"
+                                        text: "Quantidade"
+                                        halign: "center"
+                                    
+                                    TextInput:
+                                        id: descricao_agenda_editar
+                                        text: "Descrição"
+                                        halign: "center"
+
+                            BoxLayout:
+                                size_hint_y: 0.35
+                                Spinner:
+                                    id: dia_agenda_editar_produto
+                                    text: "Dia"
+                                    values: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31']
+                                
+                                Spinner:
+                                    id: mes_agenda_editar_produto
+                                    text: "Mês"
+                                    values: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+                                
+                                Spinner:
+                                    id: ano_agenda_editar_produto
+                                    text: "Ano"
+                                    values: ['2022', '2023', '2024']
+                        
+                        BoxLayout:
+                            size_hint_y: 0.15
+                            Button:
+                                text: "Voltar"
+                                on_release: 
+                                    gerenciador_agenda.current = "agenda_box"
+                                    gerenciador_agenda.transition.direction = "up"
+                            
+                            Button:
+                                text: "Excluir"
+                                on_release: 
+                                    agenda_scroll.excluir(gerenciador.atual_editando_agenda)
+                                    gerenciador_agenda.current = "agenda_box"
+                                    gerenciador_agenda.transition.direction = "up"
+                                    compromissos_da_semana_menu.atualizar()
+
+                            Button:
+                                text: "Concluir edição"
+                                on_release: 
+                                    gerenciador_agenda.current = "agenda_box"
+                                    agenda_scroll.editar([spinner_agenda_editar_produto.text, quantidade_produto_agenda_editar.text, descricao_agenda_editar.text, dia_agenda_editar_produto.text, mes_agenda_editar_produto.text, ano_agenda_editar_produto.text], gerenciador.atual_editando_agenda)
+                                    gerenciador_agenda.transition.direction = "up"
+                                    compromissos_da_semana_menu.atualizar()
+
+                Screen:
+                    on_pre_enter: preco_produto_compromisso_saber_mais.text = gerenciador.pegar_algo("preco")
+                    on_pre_enter: imagem_compromisso_saber_mais.source = gerenciador.pegar_algo("imagem")
+                    on_pre_enter: data_compromisso_saber_mais.text = gerenciador.pegar_algo("data")
+                    on_pre_enter: nome_e_quantidade_produto_compromisso_saber_mais.text = gerenciador.pegar_algo("nome") + ": " + gerenciador.pegar_algo("quantidade") + " unidade(s)" 
+                    name: "mais_informacoes_compromisso"
+                    on_pre_enter: janela_informacoes_agenda.definir_descricao(gerenciador.mais_informacoes_agenda)
+                    ScreenManager:
+                        Janela_informacoes_agenda:
+                            id: janela_informacoes_agenda
+                            name: "principal_mais_informacoes"
+                            padding: 20
+                            BoxLayout:
+                                orientation: "vertical"
+                                canvas.before:
+                                    Rectangle:
+                                        pos: self.pos
+                                        size: self.size
+                                        source: 'imagens/caixa_fundo_compromisso_menu.png'
+                                BoxLayout:
+                                    size_hint_y: 0.5
+                                    BoxLayout:
+                                        size_hint_x: 0.6
+                                        padding: 10
+                                        Image:
+                                            id: imagem_compromisso_saber_mais
+                                            source: ""
+                                            allow_stretch: True
+                                            center: self.parent.center
+                                    
+                                    BoxLayout:
+                                        orientation: "vertical"
+                                        Label_minha:
+                                            id: data_compromisso_saber_mais
+                                            text: ""
+                                            
+
+                                        Label_minha:
+                                            id: nome_e_quantidade_produto_compromisso_saber_mais
+                                            text: ""
+                                            
+
+                                        TextInput:
+                                            id: preco_produto_compromisso_saber_mais
+                                            input_filter: "float"
+                                            halign: "center"
+                                            input_filter: "float"
+                                            text: ""
+
+                                Spinner:
+                                    size_hint_y: 0.3
+                                    id: spinner_agenda_concluir_venda_pagamento
+                                    text: "Escolha o método de pagamento"
+                                    values: ["Pix", "Dinheiro físico", "Cartão de crédito", "Cartão de débito"]
+                                    on_text: if self.text in ["Cartão de crédito", "Cartão de débito"]: preco_produto_compromisso_saber_mais.text = agenda_scroll.compromissos_agenda[gerenciador.mais_informacoes_agenda]["preco"]
+                                    on_text: if self.text in ["Pix", "Dinheiro físico"] and preco_produto_compromisso_saber_mais.text == agenda_scroll.compromissos_agenda[gerenciador.mais_informacoes_agenda]["preco"]: preco_produto_compromisso_saber_mais.text = str(int(preco_produto_compromisso_saber_mais.text) / 20 * 19)
+
+                                BoxLayout:
+                                    size_hint_y: 0.2
+                                    Button:
+                                        text: "Voltar"
+                                        on_release: 
+                                            gerenciador_agenda.current = "agenda_box"
+                                            gerenciador_agenda.transition.direction = "up"
+                                    
+                                    Button:
+                                        text: "Concluir venda"
+                                        on_release: 
+                                            if spinner_agenda_concluir_venda_pagamento.text != "Escolha o método de pagamento": historico_scroll.adicionar(imagem_compromisso_saber_mais.source, data_compromisso_saber_mais.text, nome_e_quantidade_produto_compromisso_saber_mais.text, preco_produto_compromisso_saber_mais.text, spinner_agenda_concluir_venda_pagamento.text, janela_informacoes_agenda.descricao)
+                                            if spinner_agenda_concluir_venda_pagamento.text != "Escolha o método de pagamento": tela_estoque_scroll.atualizar_estoque_com_agenda(nome_e_quantidade_produto_compromisso_saber_mais.text)
+                                            if spinner_agenda_concluir_venda_pagamento.text != "Escolha o método de pagamento": agenda_scroll.excluir(gerenciador.mais_informacoes_agenda)
+                                            if spinner_agenda_concluir_venda_pagamento.text != "Escolha o método de pagamento": gerenciador_agenda.current = "agenda_box"
+                                            gerenciador_agenda.transition.direction = "up"
+                                            compromissos_da_semana_menu.atualizar()
+        
+        
+
+        Screen:
+            name: "tela_historico"
+            on_enter: historico_scroll.atualizar()
+            on_enter: historico_feiras_scroll.atualizar()
+            on_enter:
+                filtro_ano_historico.text = "Ano: Todos"
+                filtro_mes_historico.text = "Mês: Todos"
+                filtro_mes_historico.values = historico_scroll.meses_filtro()
+                filtro_ano_historico.values = historico_scroll.anos_filtro()
+            BoxLayout:
+                orientation: "vertical"
+                spacing: 5
+                BoxLayout:
+                    size_hint_y: 0.15
+                    padding: 20
+                    spacing: 10
+                    BoxLayout:
+                        background_color: 1, 36/255, 148/255, 1
+                        canvas:
+                            Color:
+                                rgba: self.background_color
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+                        Button:
+                            id: botao_produtos_historico
+                            background_color: 0, 0, 0, 0
+                            on_release:
+                                gerenciador_historico.transition.direction = "right"
+                                gerenciador_historico.current = "historico_vendas"
+                                self.parent.background_color = 1, 36/255, 148/255, 1
+                                botao_feiras_historico.parent.background_color = 0, 0, 0, 0.1
+                            size_hint_x: None
+                            size_hint_y: None
+                            height: self.parent.height
+                            width: self.parent.width
+                            Image:
+                                id: imagem_produtos_historico
+                                source: "imagens/logo.png"
+                                allow_stretch: True
+                                size_hint_y: None
+                                size_hint_x: None
+                                size: self.parent.height, self.parent.height
+                                center: self.parent.center
+                            
+                    BoxLayout:
+                        background_color: 0, 0, 0, 0.1
+                        canvas:
+                            Color:
+                                rgba: self.background_color
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+                        Button:
+                            id: botao_feiras_historico
+                            background_color: 0, 0, 0, 0
+                            on_release: 
+                                gerenciador_historico.transition.direction = "left"
+                                gerenciador_historico.current = "historico_feiras"
+                                botao_produtos_historico.parent.background_color = 0, 0, 0, 0.1
+                                self.parent.background_color = 1, 36/255, 148/255, 1
+                            size_hint_x: None
+                            size_hint_y: None
+                            height: self.parent.height
+                            width: self.parent.width
+                            Image:
+                                id: imagem_feiras_historico
+                                source: "imagens/feiras.png"
+                                allow_stretch: True
+                                size_hint_y: None
+                                size_hint_x: None
+                                size: self.parent.height - 10, self.parent.height -10
+                                center: self.parent.center
+
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint_y: 0.1
+                    height: 50
+                    spacing: 20
+                    padding: 10
+                    Label_minha:
+                        text: "Filtrar por:"
+                        color: 0, 0, 0, 1
+                        
+                    Spinner:
+                        id: filtro_mes_historico
+                        text: "Mês: Todos"
+                        background_color: 0, 0, 0, 0
+                        color: 0, 0, 0, 1
+                        on_text: 
+                            historico_scroll.filtro_mes_atualizar(self.text[5:], filtro_ano_historico.text[5:])
+                            historico_feiras_scroll.filtro_mes_atualizar(self.text[5:], filtro_ano_historico.text[5:])
+                        values: historico_scroll.meses_filtro()
+
+                    Spinner:
+                        id: filtro_ano_historico
+                        text: "Ano: Todos"
+                        values: historico_scroll.anos_filtro()
+                        background_color: 0, 0, 0, 0
+                        color: 0, 0, 0, 1
+                        on_text: 
+                            historico_scroll.filtro_ano_atualizar(filtro_mes_historico.text[5:], self.text[5:])
+                            historico_feiras_scroll.filtro_ano_atualizar(filtro_mes_historico.text[5:], self.text[5:])
+                                    
+                            
+                BoxLayout:
+                    size_hint_y: 0.75
+                    ScreenManager:
+                        id: gerenciador_historico
+                        Screen:
+                            name: "historico_vendas"
+                            ScrollView:
+                                bar_color: 0, 0, 0, 0
+                                Historico_scroll:
+                                    id: historico_scroll
+                                    orientation: "vertical"
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                                    padding: 10
+                                    spacing: 20
+
+                        Screen:
+                            name: "historico_feiras"
+                            ScrollView:
+                                bar_color: 0, 0, 0, 0
+                                Historico_scroll_feiras:
+                                    id: historico_feiras_scroll
+                                    orientation: "vertical"
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                                    padding: 10
+                                    spacing: 20
+                                    
+
+        Screen:
+            name: "tela_financas"
+            on_enter: gerenciador.pegar_financias()
+            BoxLayout:
+                orientation: "vertical"
+                BoxLayout:
+                    size_hint_y: 0.15
+                    padding: 20
+                    spacing: 10
+                    BoxLayout:
+                        background_color: 1, 36/255, 148/255, 1
+                        canvas:
+                            Color:
+                                rgba: self.background_color
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+                        Button:
+                            id: botao_financas
+                            background_color: 0, 0, 0, 0
+                            on_release:
+                                gerenciador_financas.transition.direction = "right"
+                                gerenciador_financas.current = "financas atual"
+                                self.parent.background_color = 1, 36/255, 148/255, 1
+                                botao_financas_historico.parent.background_color = 0, 0, 0, 0.1
+                            size_hint_x: None
+                            size_hint_y: None
+                            height: self.parent.height
+                            width: self.parent.width
+                            Image:
+                                id: imagem_produtos_historico
+                                source: "imagens/logo.png"
+                                allow_stretch: True
+                                size_hint_y: None
+                                size_hint_x: None
+                                size: self.parent.height, self.parent.height
+                                center: self.parent.center
+                            
+                    BoxLayout:
+                        background_color: 0, 0, 0, 0.1
+                        canvas:
+                            Color:
+                                rgba: self.background_color
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+                        Button:
+                            id: botao_financas_historico
+                            background_color: 0, 0, 0, 0
+                            on_release: 
+                                gerenciador_financas.transition.direction = "left"
+                                gerenciador_financas.current = "financas historico"
+                                botao_financas.parent.background_color = 0, 0, 0, 0.1
+                                self.parent.background_color = 1, 36/255, 148/255, 1
+                            size_hint_x: None
+                            size_hint_y: None
+                            height: self.parent.height
+                            width: self.parent.width
+                            Image:
+                                id: imagem_feiras_historico
+                                source: "imagens/historico.png"
+                                allow_stretch: True
+                                size_hint_y: None
+                                size_hint_x: None
+                                size: self.parent.height - 10, self.parent.height -10
+                                center: self.parent.center
+
+                BoxLayout:
+                    ScreenManager:
+                        id: gerenciador_financas
+                        Screen:
+                            name: "financas atual"
+                            ScreenManager: 
+                                id: gerenciador_financas_atual
+                                Screen:
+                                    name: "financas atual principal"
+                                    ScrollView:
+                                        Scroll_financas_atual:
+                                            id: scroll_financas_atual
+                                            orientation: "vertical"
+                                            size_hint_y: None
+                                            height: self.minimum_height
+                                            padding: 10
+                                            spacing: 20
+
+                                Screen:
+                                    name: "financas atual adicionando"
+                                    BoxLayout:
+                                        orientation: "vertical"
+                                        BoxLayout:
+                                            size_hint_y: 0.85
+                                            padding: 50
+                                            BoxLayout:
+                                                orientation: "vertical"
+                                                spacing: 20
+                                                TextInput:
+                                                    id: produto_financas_adicionando
+                                                    text: "Produto"
+
+                                                TextInput:
+                                                    id: local_financas_adicionando
+                                                    text: "Local ou loja"
+
+                                                TextInput:
+                                                    id: preco_financas_adicionando
+                                                    text: "Preço pago"
+
+                                                TextInput:
+                                                    id: forma_pagamento_financas_adicionando
+                                                    text: "Forma de pagamento"
+
+                                                BoxLayout:
+                                                    TextInput:
+                                                        id: dia_financas_adicionando
+                                                        text: gerenciador.data_atual("dia")
+                                                    TextInput:
+                                                        id: mes_financas_adicionando
+                                                        text: gerenciador.data_atual("mes")
+                                                    TextInput:
+                                                        id: ano_financas_adicionando
+                                                        text: gerenciador.data_atual("ano")
+
+                                                TextInput:
+                                                    id: descricao_financas_adicionando
+                                                    text: "Descrição"
+                                        
+                                        BoxLayout:
+                                            size_hint_y: 0.15
+                                            padding: 30
+                                            spacing: 15
+                                            Button:
+                                                color: 0, 0, 0, 1
+                                                background_color: 0, 0, 0, 0
+                                                text: "Voltar"
+                                                on_release:
+                                                    gerenciador_financas_atual.current = "financas atual principal"
+                                                    gerenciador_financas_atual.transition.direction = "up"
+                                            
+                                            Button:
+                                                color: 0, 0, 0, 1
+                                                background_color: 0, 0, 0, 0
+                                                text: "Concluir"
+                                                on_release:
+                                                    if produto_financas_adicionando.text != "Produto" and local_financas_adicionando.text != "Local ou loja" and preco_financas_adicionando.text != "Preço pago" and forma_pagamento_financas_adicionando.text != "Forma de pagamento": gerenciador_financas_atual.current = "financas atual principal" 
+                                                    gerenciador_financas_atual.transition.direction = "up"
+                                                    scroll_financas_atual.adicionar(produto_financas_adicionando.text, local_financas_adicionando.text, preco_financas_adicionando.text, forma_pagamento_financas_adicionando.text, dia_financas_adicionando.text, mes_financas_adicionando.text, ano_financas_adicionando.text, descricao_financas_adicionando.text)
+                                                        
+
+                                Screen:
+                                    name: "financas atual editando"
+                                    on_pre_enter:
+                                        produto_financas_editando.text = scroll_financas_atual.conteudo["atual"][app.root.atual_editando_financas]["nome produto"]
+                                        local_financas_editando.text = scroll_financas_atual.conteudo["atual"][app.root.atual_editando_financas]["local"]
+                                        preco_financas_editando.text = scroll_financas_atual.conteudo["atual"][app.root.atual_editando_financas]["preco"]
+                                        forma_pagamento_financas_editando.text = scroll_financas_atual.conteudo["atual"][app.root.atual_editando_financas]["forma pagamento"]
+                                        dia_financas_editando.text = scroll_financas_atual.conteudo["atual"][app.root.atual_editando_financas]["data"]["dia"]
+                                        mes_financas_editando.text = scroll_financas_atual.conteudo["atual"][app.root.atual_editando_financas]["data"]["mes"]
+                                        ano_financas_editando.text = scroll_financas_atual.conteudo["atual"][app.root.atual_editando_financas]["data"]["ano"]
+                                        descricao_financas_editando.text = scroll_financas_atual.conteudo["atual"][app.root.atual_editando_financas]["descricao"]
+                                    BoxLayout:
+                                        orientation: "vertical"
+                                        BoxLayout:
+                                            size_hint_y: 0.85
+                                            padding: 50
+                                            BoxLayout:
+                                                orientation: "vertical"
+                                                spacing: 20
+                                                TextInput:
+                                                    id: produto_financas_editando
+                                                    text: "Produto"
+
+                                                TextInput:
+                                                    id: local_financas_editando
+                                                    text: "Local ou loja"
+
+                                                TextInput:
+                                                    id: preco_financas_editando
+                                                    text: "Preço pago"
+
+                                                TextInput:
+                                                    id: forma_pagamento_financas_editando
+                                                    text: "Forma de pagamento"
+
+                                                BoxLayout:
+                                                    TextInput:
+                                                        id: dia_financas_editando
+                                                        text: gerenciador.data_atual("dia")
+                                                    TextInput:
+                                                        id: mes_financas_editando
+                                                        text: gerenciador.data_atual("mes")
+                                                    TextInput:
+                                                        id: ano_financas_editando
+                                                        text: gerenciador.data_atual("ano")
+
+                                                TextInput:
+                                                    id: descricao_financas_editando
+                                                    text: "Descrição"
+                                        
+                                        BoxLayout:
+                                            size_hint_y: 0.15
+                                            padding: 30
+                                            spacing: 15
+                                            Button:
+                                                background_color: 0, 0, 0, 0
+                                                text: "Voltar"
+                                                color: 0, 0, 0, 1
+                                                on_release:
+                                                    gerenciador_financas_atual.current = "financas atual principal"
+                                                    gerenciador_financas_atual.transition.direction = "up"
+
+                                            Button:
+                                                background_color: 0, 0, 0, 0
+                                                text: "Excluir"
+                                                color: 0, 0, 0, 1
+                                                on_release:
+                                                    gerenciador_financas_atual.current = "financas atual principal"
+                                                    gerenciador_financas_atual.transition.direction = "up"
+                                                    scroll_financas_atual.excluir(app.root.atual_editando_financas)
+                                            
+                                            Button:
+                                                color: 0, 0, 0, 1
+                                                background_color: 0, 0, 0, 0
+                                                text: "Concluir"
+                                                on_release:
+                                                    gerenciador_financas_atual.current = "financas atual principal"
+                                                    gerenciador_financas_atual.transition.direction = "up"
+                                                    scroll_financas_atual.editar(app.root.atual_editando_financas, produto_financas_editando.text, local_financas_editando.text, preco_financas_editando.text, forma_pagamento_financas_editando.text, dia_financas_editando.text, mes_financas_editando.text, ano_financas_editando.text, descricao_financas_editando.text)
+
+
+                        Screen:
+                            on_enter: scroll_financas_historico.atualizar()
+                            name: "financas historico"
+                            BoxLayout:
+                                orientation: "vertical"
+                                BoxLayout:
+                                    orientation: "horizontal"
+                                    size_hint_y: 0.1
+                                    height: 50
+                                    spacing: 20
+                                    padding: 10
+                                    Label_minha:
+                                        text: "Filtrar por:"
+                                        color: 0, 0, 0, 1
+                                        
+                                    Spinner:
+                                        id: filtro_mes_financas
+                                        text: "Mês: Todos"
+                                        background_color: 0, 0, 0, 0
+                                        color: 0, 0, 0, 1
+                                        on_text: 
+                                            scroll_financas_historico.filtro_mes_atualizar(self.text[5:], filtro_ano_financas.text[5:])
+                                        values: scroll_financas_historico.meses_filtro()
+
+                                    Spinner:
+                                        id: filtro_ano_financas
+                                        text: "Ano: Todos"
+                                        values: scroll_financas_historico.anos_filtro()
+                                        background_color: 0, 0, 0, 0
+                                        color: 0, 0, 0, 1
+                                        on_text: 
+                                            scroll_financas_historico.filtro_ano_atualizar(filtro_mes_financas.text[5:], self.text[5:])
+                                ScrollView:
+                                    size_hint_y: 0.9
+                                    Scroll_financas_historico:
+                                        id: scroll_financas_historico
+                                        orientation: "vertical"
+                                        size_hint_y: None
+                                        height: self.minimum_height
+                                        padding: 10
+                                        spacing: 20
+                        
+
+        
+    BoxLayout:
+        size_hint_y: 0.1
+        spacing: 20
+        BoxLayout:
+            size_hint_x: 0.2
+            padding: 5
+            canvas:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Button:
+                on_release: 
+                    compromissos_da_semana_menu.atualizar()
+                    menu_proximas_feiras.atualizar()
+                    gerenciador.current = "menu"
+                    gerenciador.transition.direction = "right"
+                background_color: 1, 1, 1, 0
+                size_hint: None, None
+                height: self.parent.height
+                width: self.parent.width
+                center: self.parent.center
+                Image:
+                    source: "imagens/menu.png"
+                    allow_stretch: True
+                    height: self.parent.height * .8
+                    width: self.parent.height * .8
+                    center: self.parent.center
+                    size_hint: None, None
+        
+        BoxLayout:
+            size_hint_x: 0.2
+            padding: 5
+            canvas:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Button:
+                on_release: 
+                    if gerenciador.current == "menu": gerenciador.transition.direction = "left"
+                    if gerenciador.current == "tela_feiras": gerenciador.transition.direction = "right"
+                    if gerenciador.current == "tela_agenda": gerenciador.transition.direction = "right"
+                    if gerenciador.current == "tela_historico": gerenciador.transition.direction = "right"
+                    if gerenciador.current == "tela_financas": gerenciador.transition.direction = "right"
+                    gerenciador.current = "tela_estoque"
+                background_color: 1, 1, 1, 0
+                size_hint: None, None
+                height: self.parent.height
+                width: self.parent.width
+                Image:
+                    source: "imagens/estoque.png"
+                    allow_stretch: True
+                    height: self.parent.height *.8
+                    width: self.parent.height * .8
+                    center: self.parent.center
+                    size_hint: None, None
+
+        BoxLayout:
+            size_hint_x: 0.2
+            padding: 5
+            canvas:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Button:
+                on_release: 
+                    if gerenciador.current == "menu": gerenciador.transition.direction = "left"
+                    if gerenciador.current == "tela_estoque": gerenciador.transition.direction = "left"
+                    if gerenciador.current == "tela_agenda": gerenciador.transition.direction = "right"
+                    if gerenciador.current == "tela_historico": gerenciador.transition.direction = "right"
+                    if gerenciador.current == "tela_financas": gerenciador.transition.direction = "right"
+                    gerenciador.current = "tela_feiras"
+                background_color: 1, 1, 1, 0
+                size_hint: None, None
+                height: self.parent.height
+                width: self.parent.width
+                Image:
+                    source: "imagens/feiras.png"
+                    allow_stretch: True
+                    height: self.parent.height * .8
+                    width: self.parent.height * .8
+                    center: self.parent.center
+                    size_hint: None, None
+                    
+        BoxLayout:
+            size_hint_x: 0.2
+            padding: 5
+            canvas:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Button:
+                on_release: 
+                    if gerenciador.current == "menu": gerenciador.transition.direction = "left"
+                    if gerenciador.current == "tela_estoque": gerenciador.transition.direction = "left"
+                    if gerenciador.current == "tela_feiras": gerenciador.transition.direction = "left"
+                    if gerenciador.current == "tela_historico": gerenciador.transition.direction = "right"
+                    if gerenciador.current == "tela_financas": gerenciador.transition.direction = "right"
+                    gerenciador.current = "tela_agenda"  
+                background_color: 1, 1, 1, 0
+                size_hint: None, None
+                height: self.parent.height
+                width: self.parent.width
+                Image:
+                    source: "imagens/agenda.png"
+                    allow_stretch: True 
+                    height: self.parent.height * .8
+                    width: self.parent.height * .8
+                    center: self.parent.center
+                    size_hint: None, None
+
+        BoxLayout:
+            size_hint_x: 0.2
+            padding: 5
+            canvas:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Button:  
+                on_release: 
+                    if gerenciador.current == "menu": gerenciador.transition.direction = "left"
+                    if gerenciador.current == "tela_estoque": gerenciador.transition.direction = "left"
+                    if gerenciador.current == "tela_feiras": gerenciador.transition.direction = "left"
+                    if gerenciador.current == "tela_agenda": gerenciador.transition.direction = "left"
+                    if gerenciador.current == "tela_financas": gerenciador.transition.direction = "right"
+                    gerenciador.current = "tela_historico"  
+                    historico_scroll.atualizar()
+                    historico_feiras_scroll.atualizar()
+                    
+                background_color: 1, 1, 1, 0
+                size_hint: None, None
+                height: self.parent.height
+                width: self.parent.width
+                Image:
+                    source: "imagens/historico.png"
+                    allow_stretch: True 
+                    height: self.parent.height * .8
+                    width: self.parent.height *.8
+                    center: self.parent.center   
+                    size_hint: None, None
+        
+        BoxLayout:
+            size_hint_x: 0.2
+            padding: 5
+            canvas:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Button:  
+                on_release: 
+                    gerenciador.current = "tela_financas"  
+                    gerenciador.transition.direction = "left"
+                background_color: 1, 1, 1, 0
+                size_hint: None, None
+                height: self.parent.height
+                width: self.parent.width
+                Image:
+                    source: "imagens/financas.png"
+                    allow_stretch: True 
+                    size_hint: None, None
+                    height: self.parent.height * .8
+                    width: self.parent.height * .8
+                    center: self.parent.center 
+
+
+<Caixa_item_estoque>:
+    size_hint_y: None
+    height: 250
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'imagens/caixa_fundo.png'
+
+    BoxLayout:
+        padding: 10
+        size_hint_x: 0.2
+        Image:
+            id: imagem
+            source: "imagens/logo.png"
+            allow_stretch: True
+
+    BoxLayout:
+        orientation: "vertical"
+        size_hint_x: 0.6
+        Label_minha:
+            id: nome_produto
+            text: ""
+            font_size: self.parent.height * .2
+            bold: True
+            
+        
+        Label_minha:
+            id: quantidade_produto
+            text: ""
+            font_size: self.parent.height * .2
+            bold: True
+            
+        
+        Label_minha:
+            id: preco_produto
+            text: ""
+            font_size: self.parent.height * .2
+            bold: True
+            
+
+    BoxLayout:
+        id: editar
+        size_hint_x: 0.2
+        Button:
+            on_release: 
+                self.parent.parent.parent.parent.parent.parent.parent.current = "editar_caixa_estoque"
+                self.parent.parent.parent.parent.parent.parent.parent.transition.direction = "down"
+            on_press: self.parent.parent.parent.parent.parent.parent.parent.parent.parent.editando_estoque(self.parent.parent.numero)
+            background_color: 0, 0, 0, 0
+            size_hint_x: None
+            size_hint_y: None
+            height: self.parent.height
+            width: self.parent.width
+            Image:
+                source: "imagens/edit.png"
+                allow_stretch: True
+                center: self.parent.center
+                size_hint_x: None
+                size_hint_y: None
+                height: self.parent.height
+                width: self.parent.width
+            
+        
+<Botao_adicionar_estoque>:
+    size_hint_y: None
+    height: 125
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "imagens/caixa_fundo_adicionar.png"
+    Button:
+        on_release: 
+            self.parent.parent.parent.parent.parent.parent.transition.direction = "down"
+            self.parent.parent.parent.parent.parent.parent.current = "adicionar_estoque"
+            
+
+        background_color: 0, 0, 0, 0
+        center: self.parent.center
+        text: "+"
+        bold: True
+        font_size: self.height + 10
+
+<Caixa_compromissos_menu>:
+    orientation: "vertical"
+    size_hint_x: None
+    width: 450
+    height: 450
+    canvas:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'imagens/caixa_fundo_compromisso_menu.png'
+    BoxLayout:
+        size_hint_y: 0.7
+        BoxLayout:
+            size_hint_x: 0.6
+            padding: 10
+            Image:
+                id: imagem_compromisso_menu
+                source: "imagens/logo.png"
+                allow_stretch: True
+                center: self.parent.center
+        
+        BoxLayout:
+            orientation: "vertical"
+            Label_minha:
+                id: data_compromisso_menu
+                
+
+            Label_minha:
+                id: nome_e_quantidade_produto_compromisso_menu
+                
+
+            Label_minha:
+                id: preco_produto_compromisso_menu
+                
+
+
+<Caixa_agenda_compromissos>:
+    size_hint_y: None
+    height: 250
+    orientation: "vertical"
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'imagens/caixa_fundo.png'
+    BoxLayout:
+        BoxLayout:
+            padding: 10
+            size_hint_x: 0.2
+            Image:
+                id: imagem_agenda_caixa
+                source: "imagens/logo.png"
+                allow_stretch: True
+
+        Button:
+            background_color: 0, 0, 0, 0
+            id: caixinha_conteudo_agenda
+            orientation: "vertical"
+            size_hint_x: 0.6
+            on_release: 
+                self.parent.parent.parent.parent.parent.parent.current = "mais_informacoes_compromisso"
+                self.parent.parent.parent.parent.parent.parent.transition.direction = "down"
+            on_press: self.parent.parent.parent.parent.parent.parent.parent.parent.mais_informacoes_agenda_atualizar(self.parent.parent.numero)
+            text: data_agenda_caixa.text + "\n" + nome_e_quantidade_produto_agenda_caixa.text + "\n" + preco_total_agenda_caixa.text
+            font_size: self.height * .2
+            bold: True
+            halign: "center"
+            BoxLayout:
+                Label_minha:
+                    id: data_agenda_caixa
+                    
+                    text: ""
+                    font_size: self.parent.height * .2
+                    bold: True
+
+                Label_minha:
+                    id: nome_e_quantidade_produto_agenda_caixa
+                    
+                    text: ""
+                    font_size: self.parent.height * .2
+                    bold: True
+                
+                Label_minha:
+                    id: preco_total_agenda_caixa
+                    
+                    text: ""
+                    font_size: self.parent.height * .2
+                    bold: True
+
+        BoxLayout:
+            id: editar_agenda_caixa
+            size_hint_x: 0.2
+            Button:
+                on_release: 
+                    self.parent.parent.parent.parent.parent.parent.parent.current = "editar_caixa_agenda"
+                    self.parent.parent.parent.parent.parent.parent.parent.transition.direction = "down"
+                on_press: self.parent.parent.parent.parent.parent.parent.parent.parent.parent.editando_agenda(self.parent.parent.parent.numero)
+                background_color: 0, 0, 0, 0
+                size_hint_x: None
+                size_hint_y: None
+                height: self.parent.height
+                width: self.parent.width
+                Image:
+                    source: "imagens/edit.png"
+                    allow_stretch: True
+                    center: self.parent.center
+                    size_hint_x: None
+                    size_hint_y: None
+                    height: self.parent.height
+                    width: self.parent.width
+
+<Botao_adicionar_agenda>:
+    size_hint_y: None
+    height: 125
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "imagens/caixa_fundo_adicionar.png"
+    Button:
+        on_release: 
+            self.parent.parent.parent.parent.parent.current = "adicionar_agenda"
+            self.parent.parent.parent.parent.parent.transition.direction = "down"
+        background_color: 0, 0, 0, 0
+        center: self.parent.center
+        text: "+"
+        bold: True
+        font_size: self.height + 10
+
+<Caixa_historico>:
+    size_hint_y: None
+    height: 250
+    orientation: "vertical"
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'imagens/caixa_fundo.png'
+    
+    BoxLayout:
+        BoxLayout:
+            padding: 10
+            size_hint_x: 0.2
+            Image:
+                id: imagem_historico_caixa
+                source: "imagens/logo.png"
+                allow_stretch: True
+
+        BoxLayout:
+            background_color: 0, 0, 0, 0
+            id: caixinha_conteudo_historico
+            orientation: "vertical"
+            size_hint_x: 0.6
+            Label_minha:
+                id: data_historico_caixa
+                text: ""
+                font_size: self.parent.height * .2
+                
+                bold: True
+
+            Label_minha:
+                id: nome_e_quantidade_produto_historico_caixa
+                text: ""
+                font_size: self.parent.height * .2
+                
+                bold: True
+            
+            Label_minha:
+                id: preco_total_historico_caixa
+                text: ""
+                font_size: self.parent.height * .2
+                
+                bold: True
+            
+            Label_minha:
+                id: metodo_de_pagamento
+                
+                text: ""
+                font_size: self.parent.height * .2
+                bold: True
+
+        BoxLayout:
+            size_hint_x: 0.2
+
+<Caixa_feiras>:
+    size_hint_y: None
+    height: 300
+    orientation: "vertical"
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'imagens/caixa_fundo.png'
+    BoxLayout:
+        BoxLayout:
+            padding: 10
+            size_hint_x: 0.2
+            Image:
+                id: imagem_agenda_caixa
+                source: "imagens/feiras.png"
+                allow_stretch: True
+
+        Button:
+            background_color: 0, 0, 0, 0
+            on_release: 
+                self.parent.parent.parent.parent.parent.parent.current = "concluir_feira"
+                self.parent.parent.parent.parent.parent.parent.transition.direction = "down"
+            on_press: self.parent.parent.parent.parent.parent.parent.parent.parent.feira_editar(self.parent.parent.numero)
+            orientation: "vertical"
+            size_hint_x: 0.6
+            bold: True
+            halign: "center"
+            text: nome_feira.text + "\n" + local_feira.text + "\n" + data_feira.text + "\n" + horarios_feira.text + "\n" + preco_feiras_total.text
+            Label_minha:
+                id: nome_feira
+                text: ""
+                bold: True
+                
+
+            Label_minha:
+                id: local_feira
+                text: ""
+                bold: True
+                
+            
+            Label_minha:
+                
+                id: data_feira
+                text: ""
+                bold: True
+            
+            Label_minha:
+                id: horarios_feira
+                
+                text: ""
+                bold: True
+            
+            Label_minha:
+                id: preco_feiras_total
+                
+                text: ""
+                bold: True
+
+        BoxLayout:
+            size_hint_x: 0.2
+            Button:
+                on_release: 
+                    self.parent.parent.parent.parent.parent.parent.parent.current = "editar_caixa_feiras"
+                    self.parent.parent.parent.parent.parent.parent.parent.transition.direction = "down"
+                on_press: self.parent.parent.parent.parent.parent.parent.parent.parent.parent.feira_editar(self.parent.parent.parent.numero)
+                background_color: 0, 0, 0, 0
+                size_hint_x: None
+                size_hint_y: None
+                height: self.parent.height
+                width: self.parent.width
+                Image:
+                    source: "imagens/edit.png"
+                    allow_stretch: True
+                    center: self.parent.center
+                    size_hint_x: None
+                    size_hint_y: None
+                    height: self.parent.height
+                    width: self.parent.width
+
+<Produto_feiras>:
+    size_hint_y: None
+    height: 200
+
+    BoxLayout:
+        size_hint_x: 0.1
+
+    BoxLayout:
+        id: caixinha_descricao
+        size_hint_x: 0.8
+        orientation: "vertical"
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'imagens/caixa_fundo.png'
+        BoxLayout:
+            BoxLayout:
+                padding: 10
+                size_hint_x: 0.2
+                Image:
+                    id: imagem_feiras_produto
+                    source: "imagens/logo.png"
+                    allow_stretch: True
+
+            BoxLayout:
+                size_hint_x: 0.6
+                orientation: "vertical"
+                Label_minha:
+                    id: feiras_nome_produto
+                    text: ""
+                    
+                    font_size: self.parent.height * .2
+                    bold: True
+
+                Label_minha:
+                    id: feiras_quantidade_produto
+                    text: ""
+                    font_size: self.parent.height * .2
+                    
+                    bold: True
+                
+                Label_minha:
+                    id: preco_total_agenda_caixa
+                    
+                    text: ""
+                    font_size: self.parent.height * .2
+                    bold: True
+
+            Button:
+                size_hint_x: 0.2
+                background_color: 0, 0, 0, 0
+                on_release: self.parent.parent.parent.parent.excluir_produto(self.parent.parent.parent.numero, self.parent.parent.parent.numero_feira)
+                text: "x"
+                color: 1, 0, 0, 1
+                font_size: 50
+                bold: True
+    
+    BoxLayout:
+        size_hint_x: 0.1
+
+<Botao_adicionar_produto_feira>:
+    size_hint_y: None
+    height: 125
+    BoxLayout:
+        size_hint_x: 0.1
+    
+    Button:
+        size_hint_x: 0.8
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "imagens/caixa_fundo_adicionar.png"
+        on_release: 
+            self.parent.parent.parent.parent.parent.current = "adicionar_produto_feira"
+            self.parent.parent.parent.parent.parent.transition.direction = "down"
+        on_press: self.parent.parent.parent.parent.parent.parent.parent.produto_feira_adiconar(self.parent.numero)
+        background_color: 0, 0, 0, 0
+        center: self.parent.center
+        text: "+"
+        bold: True
+        font_size: self.height + 10
+    
+    BoxLayout:
+        size_hint_x: 0.1
+
+<Botao_adicionar_feira>:
+    size_hint_y: None
+    height: 150
+    Button:
+        on_release: 
+            self.parent.parent.parent.parent.parent.current = "adicionar_feira"
+            self.parent.parent.parent.parent.parent.transition.direction = "down"
+        background_color: 0, 0, 0, 0
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: "imagens/caixa_fundo_adicionar.png"
+        center: self.parent.center
+        text: "+"
+        bold: True
+        font_size: self.height + 10
+
+<Caixa_feiras_menu>:
+    orientation: "vertical"
+    size_hint_x: None
+    width: 450
+    height: 450
+    canvas:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'imagens/caixa_fundo_compromisso_menu.png'
+    BoxLayout:
+        size_hint_y: 0.7
+        BoxLayout:
+            size_hint_x: 0.6
+            padding: 10
+            Image:
+                source: "imagens/feiras.png"
+                allow_stretch: True
+                center: self.parent.center
+        
+        BoxLayout:
+            orientation: "vertical"
+            Label_minha:
+                id: nome_feira_menu
+                
+
+            Label_minha:
+                id: local_feira_menu
+                
+
+            Label_minha:
+                id: data_feira_menu
+                
+            
+            Label_minha:
+                id: horarios_feira_menu
+                
+
+<Caixa_concluir_feira>:
+    size_hint_y: None
+    height: 150
+
+    BoxLayout:
+        size_hint_x: 0.1
+
+    BoxLayout:
+        id: caixinha_descricao_concluir
+        size_hint_x: 0.8
+        orientation: "vertical"
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'imagens/caixa_fundo.png'
+        BoxLayout:
+            BoxLayout:
+                padding: 10
+                size_hint_x: 0.2
+                Image:
+                    id: imagem_feiras_produto_concluir
+                    source: "imagens/logo.png"
+                    allow_stretch: True
+
+            BoxLayout:
+                size_hint_x: 0.6
+                orientation: "vertical"
+                Label_minha:
+                    id: feiras_nome_produto_concluir
+                    text: ""
+                    
+                    font_size: self.parent.height * .2
+                    bold: True
+
+                Label_minha:
+                    id: feiras_quantidade_produto_concluir
+                    
+                    text: ""
+                    font_size: self.parent.height * .2
+                    bold: True
+                
+                Label_minha:
+                    id: preco_total_agenda_caixa_concluir
+                    
+                    text: ""
+                    font_size: self.parent.height * .2
+                    bold: True
+
+            Button:
+                size_hint_x: 0.2
+                background_color: 0, 0, 0, 0
+                on_release: self.parent.parent.parent.parent.excluir_produto(self.parent.parent.parent.numero)
+                text: "x"
+                color: 1, 0, 0, 1
+                font_size: 50
+                bold: True
+    
+    BoxLayout:
+        size_hint_x: 0.1
+
+<Botao_adicionar_produto_concluir_feira>:
+    size_hint_y: None
+    height: 75
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "imagens/caixa_fundo_adicionar.png"
+    Button:
+        on_release: 
+            self.parent.parent.parent.parent.parent.parent.parent.current = "adicionar_produto_concluir_feira"
+            self.parent.parent.parent.parent.parent.parent.parent.transition.direction = "left"
+        background_color: 0, 0, 0, 0
+        center: self.parent.center
+        text: "+"
+        bold: True
+        font_size: self.height + 10
+
+<Caixa_historico_feira>:
+    size_hint_y: None
+    height: 250
+    orientation: "vertical"
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'imagens/caixa_fundo.png'
+    BoxLayout:
+        BoxLayout:
+            padding: 10
+            size_hint_x: 0.2
+            Image:
+                id: imagem_agenda_caixa
+                source: "imagens/feiras.png"
+                allow_stretch: True
+
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_x: 0.6
+            Label_minha:
+                id: nome_feira_historico
+                
+                text: ""
+                bold: True
+
+            Label_minha:
+                id: local_feira_historico
+                
+                text: ""
+                bold: True
+            
+            Label_minha:
+                id: data_feira_historico
+                
+                text: ""
+                bold: True
+            
+            Label_minha:
+                id: horarios_feira_historico
+                
+                text: ""
+                bold: True
+            
+            Label_minha:
+                id: preco_feiras_total_historico
+                
+                text: ""
+                bold: True
+
+        BoxLayout:
+            size_hint_x: 0.2
+
+<Produto_feiras_historico>:
+    size_hint_y: None
+    height: 200
+
+    BoxLayout:
+        size_hint_x: 0.1
+
+    BoxLayout:
+        id: caixinha_descricao
+        size_hint_x: 0.8
+        orientation: "vertical"
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'imagens/caixa_fundo.png'
+        BoxLayout:
+            BoxLayout:
+                padding: 10
+                size_hint_x: 0.2
+                Image:
+                    id: imagem_feiras_produto_historico
+                    source: "imagens/logo.png"
+                    allow_stretch: True
+
+            BoxLayout:
+                size_hint_x: 0.6
+                orientation: "vertical"
+                Label_minha:
+                    id: feiras_nome_produto_historico
+                    
+                    text: ""
+                    font_size: self.parent.height * .2
+                    bold: True
+
+                Label_minha:
+                    id: feiras_quantidade_produto_historico
+                    
+                    text: ""
+                    font_size: self.parent.height * .2
+                    bold: True
+                
+                Label_minha:
+                    id: preco_total_feira_historico
+                    
+                    text: ""
+                    font_size: self.parent.height * .2
+                    bold: True
+                
+                Label_minha:
+                    id: metodo_de_pagamento_historico_feira_produto
+                    
+                    text: ""
+                    font_size: self.parent.height * .2
+                    bold: True
+
+            Button:
+                size_hint_x: 0.2
+                background_color: 0, 0, 0, 0
+    
+    BoxLayout:
+        size_hint_x: 0.1
+
+<Botao_adicionar_financas>:
+    size_hint_y: None
+    height: 125
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "imagens/caixa_fundo_adicionar.png"
+    Button:
+        on_release: 
+            self.parent.parent.parent.parent.parent.current = "financas atual adicionando"
+            self.parent.parent.parent.parent.parent.transition.direction = "down"
+        background_color: 0, 0, 0, 0
+        center: self.parent.center
+        text: "+"
+        bold: True
+        font_size: self.height + 10
+
+<Caixa_financas_atual>:
+    size_hint_y: None
+    height: 250
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'imagens/caixa_fundo.png'
+
+    BoxLayout:
+        orientation: "vertical"
+        size_hint_x: 0.8
+        Label_minha:
+            id: nome_produto
+            text: ""
+            font_size: self.parent.height * .2
+            bold: True
+            
+        
+        Label_minha:
+            id: local
+            text: ""
+            font_size: self.parent.height * .2
+            bold: True
+            
+        
+        Label_minha:
+            id: preco
+            text: ""
+            font_size: self.parent.height * .2
+            bold: True
+
+            
+        Label_minha:
+            id: data
+            text: ""
+            font_size: self.parent.height * .2
+            bold: True
+            
+
+    BoxLayout:
+        id: editar
+        size_hint_x: 0.2
+        Button:
+            on_release: 
+                self.parent.parent.parent.parent.parent.parent.current = "financas atual editando"
+                self.parent.parent.parent.parent.parent.parent.transition.direction = "down"
+            on_press: app.root.editando_financas(self.parent.parent.numero)
+            background_color: 0, 0, 0, 0
+            size_hint_x: None
+            size_hint_y: None
+            height: self.parent.height
+            width: self.parent.width
+            Image:
+                source: "imagens/edit.png"
+                allow_stretch: True
+                center: self.parent.center
+                size_hint_x: None
+                size_hint_y: None
+                height: self.parent.height
+                width: self.parent.width
+
+<Caixa_financas_historico>:
+    size_hint_y: None
+    height: 250
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'imagens/caixa_fundo.png'
+
+    BoxLayout:
+        orientation: "vertical"
+        Label_minha:
+            id: nome_produto
+            text: ""
+            font_size: self.parent.height * .2
+            bold: True
+            
+        
+        Label_minha:
+            id: local
+            text: ""
+            font_size: self.parent.height * .2
+            bold: True
+            
+        
+        Label_minha:
+            id: preco
+            text: ""
+            font_size: self.parent.height * .2
+            bold: True
+
+            
+        Label_minha:
+            id: data
+            text: ""
+            font_size: self.parent.height * .2
+            bold: True
+
+<Botao_concluir_mes_financas>:
+    height: 100
+    background_color: 0, 0, 0, 0
+    size_hint_y: None
+    Button:
+        center: self.parent.center
+        text: "concluir mes"
+        background_color: 0, 0, 0, 0
+        color: 0, 0, 0, 1
+        on_release: if len(self.parent.parent.conteudo["atual"]) > 0: self.parent.parent.concluir_mes()
